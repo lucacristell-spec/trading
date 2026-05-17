@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Bottleneck Portfolio | L. SIGNAL</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #111118;
+    --bg-card-hover: #1a1a24;
+    --accent: #00d4ff;
+    --accent-dim: rgba(0, 212, 255, 0.15);
+    --accent-glow: rgba(0, 212, 255, 0.4);
+    --purple: #a855f7;
+    --purple-dim: rgba(168, 85, 247, 0.15);
+    --green: #22c55e;
+    --green-dim: rgba(34, 197, 94, 0.15);
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --text-dark: #64748b;
+    --border: rgba(255,255,255,0.06);
+    --border-hover: rgba(0, 212, 255, 0.3);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1rem 2rem;
+    background: rgba(10,10,15,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.3s;
+    cursor: pointer;
+  }
+    cursor: pointer;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent);
+  }
+
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 6rem 2rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 8rem;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--accent-dim);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.8s ease-out 0.1s both;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    color: var(--text-dim);
+    max-width: 600px;
+    margin-bottom: 3rem;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-tag {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: var(--purple-dim);
+    border: 1px solid rgba(168,85,247,0.2);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    color: var(--purple);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-desc {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    max-width: 600px;
+  }
+
+  .theory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .theory-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .theory-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--purple));
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+
+  .theory-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 60px var(--accent-glow);
+  }
+
+  .theory-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .theory-icon {
+    width: 48px; height: 48px;
+    background: var(--accent-dim);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .theory-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .theory-card p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+
+  .timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3rem 0;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--purple));
+    opacity: 0.3;
+  }
+
+  .timeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .timeline-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 3px solid var(--accent);
+    transition: all 0.3s;
+  }
+
+  .timeline-step:hover .timeline-dot {
+    background: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .timeline-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-align: center;
+    max-width: 100px;
+  }
+
+  .tier {
+    margin-bottom: 3rem;
+  }
+
+  .tier-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tier-badge {
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .tier-1 .tier-badge { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+  .tier-2 .tier-badge { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+  .tier-3 .tier-badge { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+  .tier-4 .tier-badge { background: rgba(245,158,11,0.15); color: var(--orange); border: 1px solid rgba(245,158,11,0.3); }
+
+  .tier-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .tier-desc {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+
+  .stock-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .stock-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stock-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  .stock-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .stock-ticker {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .stock-price {
+    text-align: right;
+  }
+
+  .stock-price-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stock-price-change {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .stock-role {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+  }
+
+  .stock-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  .metric {
+    text-align: center;
+  }
+
+  .metric-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .metric-label {
+    font-size: 0.7rem;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .metric.positive .metric-value { color: var(--green); }
+  .metric.negative .metric-value { color: var(--red); }
+
+  .alert-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(239,68,68,0.1);
+    border-radius: 8px;
+    font-size: 0.8rem;
+  }
+
+  .alert-bar.green {
+    background: rgba(34,197,94,0.1);
+  }
+
+  .alert-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: pulse 2s infinite;
+  }
+
+  .alert-bar.green .alert-dot {
+    background: var(--green);
+  }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+  }
+
+  .chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+
+  .chart-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  .bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .bar-label {
+    width: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 24px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .bar-fill::after {
+    content: attr(data-value);
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  .bar-fill.negative {
+    background: linear-gradient(90deg, var(--red), rgba(239,68,68,0.6));
+  }
+
+  .bar-fill.neutral {
+    background: linear-gradient(90deg, var(--orange), rgba(245,158,11,0.6));
+  }
+
+  .bar-fill.positive {
+    background: linear-gradient(90deg, var(--green), rgba(34,197,94,0.6));
+  }
+
+  .donut-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .donut-chart {
+    width: 200px; height: 200px;
+    position: relative;
+  }
+
+  .donut-svg {
+    transform: rotate(-90deg);
+  }
+
+  .donut-circle {
+    fill: none;
+    stroke-width: 30;
+    transition: stroke-dasharray 1s ease-out;
+  }
+
+  .donut-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .donut-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .donut-label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .donut-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+  }
+
+  .alert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .alert-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: all 0.3s;
+  }
+
+  .alert-card:hover {
+    border-color: var(--border-hover);
+  }
+
+  .alert-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .alert-card-ticker {
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .alert-card-status {
+    padding: 0.2rem 0.5rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .status-watch { background: var(--accent-dim); color: var(--accent); }
+  .status-near { background: var(--green-dim); color: var(--green); }
+  .status-far { background: rgba(239,68,68,0.15); color: var(--red); }
+
+  .alert-targets {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .alert-target {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+  }
+
+  .alert-target-price {
+    font-family: 'SF Mono', monospace;
+    font-weight: 600;
+  }
+
+  .alert-target-pct {
+    font-size: 0.75rem;
+    color: var(--text-dark);
+  }
+
+  footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dark);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .animate-in {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-dark);
+  }
+
+  @media (max-width: 768px) {
+    .hero-stats { flex-direction: column; gap: 1.5rem; }
+    .timeline { flex-wrap: wrap; gap: 1rem; }
+    .timeline::before { display: none; }
+    .charts-grid { grid-template-columns: 1fr; }
+    .stock-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas class="bg-canvas" id="bgCanvas"></canvas>
+
+<nav>
+  <div class="logo">L. SIGNAL</div>
+  <ul class="nav-links">
+    <li><a onclick="scrollToSection('theory')">Theory</a></li>
+    <li><a onclick="scrollToSection('portfolio')">Portfolio</a></li>
+    <li><a onclick="scrollToSection('alerts')">Alerts</a></li>
+    <li><a onclick="scrollToSection('analytics')">Analytics</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-badge">Live Dashboard</div>
+  <h1>AI Bottleneck<br>Portfolio</h1>
+  <p class="hero-subtitle">Own the physical bottlenecks AI cannot scale without. Structural constraints. Non-substitutable demand. Under-radar suppliers.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-value" id="stat-tickers">19</div>
+      <div class="stat-label">Positions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="stat-mcap">$1.2T</div>
+      <div class="stat-label">Total Mkt Cap</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="stat-phases">4</div>
+      <div class="stat-label">Thesis Phases</div>
+    </div>
+  </div>
+</section>
+
+<section id="theory">
+  <div class="section-header">
+    <div class="section-tag">Framework</div>
+    <h2>The Bottleneck Theory</h2>
+    <p class="section-desc">Markets reward scarcity. The scarcest resource in AI is not compute — it's the physical infrastructure that makes compute possible.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-dot"></div>
+      <div class="timeline-label">Phase 1<br>GPUs<br>2021-23</div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-dot"></div>
+      <div class="timeline-label">Phase 2<br>Hyperscaler Capex<br>2023-24</div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-dot"></div>
+      <div class="timeline-label">Phase 3<br>Cooling + Power + Networking<br>2024-25</div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-dot" style="border-color: var(--purple); background: var(--purple);"></div>
+      <div class="timeline-label">Phase 4<br>Optical + Interconnect<br>Now</div>
+    </div>
+  </div>
+
+  <div class="theory-grid">
+    <div class="theory-card animate-in">
+      <div class="theory-icon">🔗</div>
+      <h3>Structural Constraint</h3>
+      <p>The bottleneck is physical and cannot be solved by software. Power, cooling, interconnect — these require years of infrastructure buildout.</p>
+    </div>
+    <div class="theory-card animate-in">
+      <div class="theory-icon">⚡</div>
+      <h3>Non-Substitutable Demand</h3>
+      <p>AI cannot scale without these components. There is no alternative to optical interconnect at scale. No alternative to liquid cooling for 100kW racks.</p>
+    </div>
+    <div class="theory-card animate-in">
+      <div class="theory-icon">👁️</div>
+      <h3>Under-Radar Suppliers</h3>
+      <p>The market obsesses over NVIDIA. The real alpha is in the suppliers NVIDIA cannot operate without — and that most investors have never heard of.</p>
+    </div>
+    <div class="theory-card animate-in">
+      <div class="theory-icon">📈</div>
+      <h3>Duration Mismatch</h3>
+      <p>Wall Street thinks in quarters. Infrastructure buildouts take years. This creates a structural edge for patient capital.</p>
+    </div>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="section-header">
+    <div class="section-tag">Positions</div>
+    <h2>Portfolio Construction</h2>
+    <p class="section-desc">Four tiers. Core positions for immediate heavy allocation. Watchlist for gradual scaling. Cash for pullbacks.</p>
+  </div>
+
+  
+  <div class="tier tier-1">
+    <div class="tier-header">
+      <span class="tier-badge">TIER 1 — CORE</span>
+      <div>
+        <div class="tier-title">Immediate Heavy Allocation</div>
+        <div class="tier-desc">Go heavy immediately. Highest conviction. Hold through volatility.</div>
+      </div>
+    </div>
+    <div class="stock-grid">
+      
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">MRVL</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$176.89</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Custom AI chips, interconnect, next-leg infrastructure</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">~$15B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">332.0x</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">-32.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Q1 2026 beat, raised guidance. Analyst targets $115-$134.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">ANET</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$141.97</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">AI networking, east-west traffic, ultra-fast networking</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">~$45B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Cleanest AI infrastructure compounder. Core holding.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tier tier-2">
+    <div class="tier-header">
+      <span class="tier-badge">TIER 2 — AGGRESSIVE</span>
+      <div>
+        <div class="tier-title">Scale Gradually</div>
+        <div class="tier-desc">Very high upside. Very volatile. Size smaller. Build over time.</div>
+      </div>
+    </div>
+    <div class="stock-grid">
+      
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">COHR</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$384.98</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Optical/photonics, copper scaling limits</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">~$30B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Next major AI infrastructure phase. Optical play.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">ALAB</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$232.68</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Memory fabrics, server-level connectivity</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">~$25B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Inside-server AI connectivity. High risk/reward.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tier tier-3">
+    <div class="tier-header">
+      <span class="tier-badge">TIER 3 — STABILIZER</span>
+      <div>
+        <div class="tier-title">Anchor Position</div>
+        <div class="tier-desc">Less explosive but critical. Ballast for the portfolio.</div>
+      </div>
+    </div>
+    <div class="stock-grid">
+      
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">MU</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$725.18</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Memory, AI bandwidth</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">~$80B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Memory demand + AI bandwidth exposure. Anchor.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tier tier-4">
+    <div class="tier-header">
+      <span class="tier-badge">TIER 4 — WATCHLIST</span>
+      <div>
+        <div class="tier-title">Under-Radar Opportunities</div>
+        <div class="tier-desc">Small positions. 3-5% each. Wait for pullbacks. Read 10-Q before buying.</div>
+      </div>
+    </div>
+    <div class="stock-grid">
+      
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">GEV</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$1,049</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Power infrastructure, grid modernization</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">$282B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">30.6x</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">-11.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Grid bottleneck. Down 11% from high. Consider entry.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">ETN</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$399.44</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Electrical equipment, power management</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">$163.9B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">40.4x</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">-8.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Stable compounder. Dividend yield 1%. Diversified.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">PWR</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$769.99</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Grid construction, infrastructure buildout</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">$116B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">102.0x</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">-2.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Literal builder of AI infrastructure. Massive backlog.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">AMKR</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$72.09</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Advanced packaging, OSAT, AI chip packaging</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">$18.2B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">47.7x</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">-9.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Packaging bottleneck. Arizona buildout. Volatile.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">CAMT</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$171.36</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">HBM inspection, metrology</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">$7.85B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">205.0x</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">-21.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Down 21% from high. Potential entry opportunity.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">CRDO</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$172.00</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">High-speed connectivity, second-derivative to ALAB</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">$31.76B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">70.0x</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">-20.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Down 20% from high. Connectivity play.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">CLS</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$363.00</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Hardware platforms, contract manufacturing</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">$43-60B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">59.0x</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">-14.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Canadian contract manufacturer. FY26 $19B revenue guide.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">MOD</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$271.26</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Pure-play data center cooling</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">$6.9B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>DC revenue +119% YoY. FY28 $2B target.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">NVT</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$169.01</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Electrical connections, cooling + power</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">None</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">-3.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>~30% DC exposure. Nvidia partnership.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">ONTO</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$287.52</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Process control, metrology, inspection</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">~$8B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">-21.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Less-covered Camtek peer. Down 21% from target.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">AAON</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$140.00</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">HVAC systems, data center cooling</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">None</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">-6.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Industrial under-radar. Record backlog.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">FIX</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$2,033</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">MEP services, mechanical systems</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">None</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">-11.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Boring but essential. 10-15x forward earnings.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">POWL</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$293.16</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Switchgear, electrical infrastructure</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">None</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">—</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric ">
+            <div class="metric-value">-0.1%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>80-120 week lead times. Record backlog.</span>
+        </div>
+      </div>
+
+      <div class="stock-card" onclick="toggleExpand(this)">
+        <div class="stock-header">
+          <div class="stock-ticker">KTOS</div>
+          <div class="stock-price">
+            <div class="stock-price-value">$52.09</div>
+            <div class="stock-price-change">Live</div>
+          </div>
+        </div>
+        <div class="stock-role">Defense industrial base, unmanned systems</div>
+        <div class="stock-metrics">
+          <div class="metric">
+            <div class="metric-value">$9.77B</div>
+            <div class="metric-label">Mkt Cap</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">308.0x</div>
+            <div class="metric-label">P/E</div>
+          </div>
+          <div class="metric negative">
+            <div class="metric-value">-61.0%</div>
+            <div class="metric-label">From High</div>
+          </div>
+        </div>
+        <div class="alert-bar">
+          <div class="alert-dot"></div>
+          <span>Defense thesis. Q1 beat. Down 61% from high. High risk/reward.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="alerts">
+  <div class="section-header">
+    <div class="section-tag">Monitoring</div>
+    <h2>Price Alerts & Entry Zones</h2>
+    <p class="section-desc">Set alerts at 15%, 20%, 25% below current prices. No chasing highs. Wait for pullbacks.</p>
+  </div>
+
+  <div class="alert-grid">
+    
+    <div class="alert-card">
+      <div class="alert-card-header">
+        <span class="alert-card-ticker">MRVL</span>
+        <span class="alert-card-status status-near">NEAR TARGET</span>
+      </div>
+      <div class="alert-targets">
+        <div class="alert-target">
+          <span class="alert-target-pct">15% pullback</span>
+          <span class="alert-target-price">$150.36</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">20% pullback</span>
+          <span class="alert-target-price">$141.51</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">25% pullback</span>
+          <span class="alert-target-price">$132.67</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-card-header">
+        <span class="alert-card-ticker">GEV</span>
+        <span class="alert-card-status status-watch">WATCH</span>
+      </div>
+      <div class="alert-targets">
+        <div class="alert-target">
+          <span class="alert-target-pct">15% pullback</span>
+          <span class="alert-target-price">$891.85</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">20% pullback</span>
+          <span class="alert-target-price">$839.38</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">25% pullback</span>
+          <span class="alert-target-price">$786.92</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-card-header">
+        <span class="alert-card-ticker">ETN</span>
+        <span class="alert-card-status status-watch">WATCH</span>
+      </div>
+      <div class="alert-targets">
+        <div class="alert-target">
+          <span class="alert-target-pct">15% pullback</span>
+          <span class="alert-target-price">$339.52</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">20% pullback</span>
+          <span class="alert-target-price">$319.55</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">25% pullback</span>
+          <span class="alert-target-price">$299.58</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-card-header">
+        <span class="alert-card-ticker">PWR</span>
+        <span class="alert-card-status status-watch">WATCH</span>
+      </div>
+      <div class="alert-targets">
+        <div class="alert-target">
+          <span class="alert-target-pct">15% pullback</span>
+          <span class="alert-target-price">$654.49</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">20% pullback</span>
+          <span class="alert-target-price">$615.99</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">25% pullback</span>
+          <span class="alert-target-price">$577.49</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-card-header">
+        <span class="alert-card-ticker">AMKR</span>
+        <span class="alert-card-status status-watch">WATCH</span>
+      </div>
+      <div class="alert-targets">
+        <div class="alert-target">
+          <span class="alert-target-pct">15% pullback</span>
+          <span class="alert-target-price">$61.28</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">20% pullback</span>
+          <span class="alert-target-price">$57.67</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">25% pullback</span>
+          <span class="alert-target-price">$54.07</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-card-header">
+        <span class="alert-card-ticker">CAMT</span>
+        <span class="alert-card-status status-near">NEAR TARGET</span>
+      </div>
+      <div class="alert-targets">
+        <div class="alert-target">
+          <span class="alert-target-pct">15% pullback</span>
+          <span class="alert-target-price">$145.66</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">20% pullback</span>
+          <span class="alert-target-price">$137.09</span>
+        </div>
+        <div class="alert-target">
+          <span class="alert-target-pct">25% pullback</span>
+          <span class="alert-target-price">$128.52</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="analytics">
+  <div class="section-header">
+    <div class="section-tag">Analytics</div>
+    <h2>Portfolio Analytics</h2>
+    <p class="section-desc">Visualize allocation, drawdowns, and sector exposure.</p>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">% From 52-Week High</div>
+      <div class="bar-chart" id="drawdownChart"></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Tier Allocation</div>
+      <div class="donut-container">
+        <div class="donut-chart">
+          <svg class="donut-svg" width="200" height="200" viewBox="0 0 200 200">
+            <circle class="donut-circle" cx="100" cy="100" r="70" stroke="rgba(0,212,255,0.3)" stroke-dasharray="110 330" />
+            <circle class="donut-circle" cx="100" cy="100" r="70" stroke="rgba(168,85,247,0.3)" stroke-dasharray="88 352" stroke-dashoffset="-110" />
+            <circle class="donut-circle" cx="100" cy="100" r="70" stroke="rgba(34,197,94,0.3)" stroke-dasharray="44 396" stroke-dashoffset="-198" />
+            <circle class="donut-circle" cx="100" cy="100" r="70" stroke="rgba(245,158,11,0.3)" stroke-dasharray="66 374" stroke-dashoffset="-242" />
+          </svg>
+          <div class="donut-center">
+            <div class="donut-value">4</div>
+            <div class="donut-label">Tiers</div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--accent);"></div>
+            <span>Core (40%)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--purple);"></div>
+            <span>Aggressive (25%)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--green);"></div>
+            <span>Stabilizer (15%)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--orange);"></div>
+            <span>Watchlist (10%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>L. SIGNAL Research · AI Bottleneck Portfolio Dashboard</p>
+  <p style="margin-top: 0.5rem; font-size: 0.75rem;">Data as of May 17, 2026 · Not investment advice</p>
+</footer>
+
+<script>
+// Particle background
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.size = Math.random() * 2 + 0.5;
+    this.opacity = Math.random() * 0.5 + 0.1;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0, 212, 255, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(0, 212, 255, ${0.08 * (1 - dist / 150)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleExpand(card) {
+  card.classList.toggle('expanded');
+}
+
+// Drawdown chart
+const drawdownData = [{ ticker: 'KTOS', value: -61, label: '-61.0%' },{ ticker: 'MRVL', value: -32, label: '-32.0%' },{ ticker: 'CAMT', value: -21, label: '-21.0%' },{ ticker: 'ONTO', value: -21, label: '-21.0%' },{ ticker: 'CRDO', value: -20, label: '-20.0%' },{ ticker: 'CLS', value: -14, label: '-14.0%' },{ ticker: 'GEV', value: -11, label: '-11.0%' },{ ticker: 'FIX', value: -11, label: '-11.0%' },{ ticker: 'AMKR', value: -9, label: '-9.0%' },{ ticker: 'ETN', value: -8, label: '-8.0%' },{ ticker: 'AAON', value: -6, label: '-6.0%' },{ ticker: 'NVT', value: -3, label: '-3.0%' },{ ticker: 'PWR', value: -2, label: '-2.0%' },{ ticker: 'POWL', value: -0.1, label: '-0.1%' }];
+
+const chartContainer = document.getElementById('drawdownChart');
+drawdownData.forEach(d => {
+  const row = document.createElement('div');
+  row.className = 'bar-row';
+  const width = Math.abs(d.value) * 1.5;
+  const cls = d.value < -20 ? 'negative' : d.value < -10 ? 'neutral' : 'positive';
+  row.innerHTML = `
+    <div class="bar-label">${d.ticker}</div>
+    <div class="bar-track">
+      <div class="bar-fill ${cls}" style="width: 0%" data-value="${d.label}"></div>
+    </div>
+  `;
+  chartContainer.appendChild(row);
+  
+  setTimeout(() => {
+    row.querySelector('.bar-fill').style.width = width + '%';
+  }, 100);
+});
+
+// Intersection observer for animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationPlayState = 'running';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.animate-in').forEach(el => {
+  el.style.animationPlayState = 'paused';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
