@@ -4267,16 +4267,9 @@ function scrollToSection(id) {
 
 function showAnalytics(ticker) {
   scrollToSection('analytics');
-  // Highlight the selected company card
-  document.querySelectorAll('.company-card').forEach(card => {
-    card.style.border = '1px solid var(--border)';
-  });
-  const selected = document.querySelector(`[data-ticker="${ticker}"]`);
-  if (selected) {
-    selected.style.border = '1px solid var(--accent)';
-    selected.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-  document.getElementById('analytics-title').textContent = `${ticker} — Detailed Analytics`;
+  // Navigate to stock report
+  const reportUrl = `https://lucacristell-spec.github.io/trading/stock_report.html?ticker=${ticker}`;
+  window.open(reportUrl, '_blank');
 }
 
 function filterAnalytics(tier) {
